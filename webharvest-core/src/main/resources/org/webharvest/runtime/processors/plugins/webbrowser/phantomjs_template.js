@@ -89,7 +89,6 @@ var service = server.listen(${PORT}, function (request, response) {
     try {
         if (action == "load") {
             var urlToLoad = decodeURI(params["url"]);
-            //urlToLoad = urlToLoad.replace("Č", "%C4%8C").replace("Č", "%C4%8C");
             var pageContent = params["content"];
             if (urlToLoad) {
                 if (pageContent) {
