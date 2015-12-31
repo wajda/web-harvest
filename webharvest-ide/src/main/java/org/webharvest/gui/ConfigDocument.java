@@ -1,5 +1,6 @@
 package org.webharvest.gui;
 
+import org.apache.commons.io.IOUtils;
 import org.bounce.text.xml.XMLDocument;
 import org.webharvest.definition.BufferConfigSource;
 import org.webharvest.definition.ConfigSource;
@@ -99,8 +100,10 @@ public class ConfigDocument implements DocumentListener {
         this.name = file.getName();
         String fileCharset = ide.getSettings().getFileCharset();
         //load( new InputStreamReader(new FileInputStream(file), fileCharset) );
+        String fileContent = IOUtils.toString(new FileInputStream(file), fileCharset);
         // TODO rbala We need charset as well!!!
-        load(new FileConfigSource(file));
+//        load(new FileConfigSource(file));
+        load(fileContent);
         ide.getSettings().addRecentFile( file.getAbsolutePath() );
     }
 

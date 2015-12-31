@@ -1,6 +1,7 @@
 package org.webharvest.runtime.processors.plugins.webbrowser;
 
 import com.google.inject.Inject;
+import org.apache.commons.io.IOUtils;
 import org.webharvest.annotation.Definition;
 import org.webharvest.ioc.WorkingDir;
 import org.webharvest.runtime.DynamicScopeContext;
@@ -93,19 +94,8 @@ public class WebBrowserPlugin extends WebHarvestPlugin {
             os.flush();
             os.close();
 
-            InputStream in = conn.getInputStream();
-
             this.responseCode = conn.getResponseCode();
-
-            StringBuilder buffer = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            int ch;
-            while ((ch = reader.read()) != -1) {
-                buffer.append((char) ch);
-            }
-            reader.close();
-
-            this.content = buffer.toString();
+            this.content = IOUtils.toString(conn.getInputStream(), "UTF-8");
         }
 
         private boolean isOkResponse() {
