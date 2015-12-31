@@ -88,7 +88,8 @@ var service = server.listen(${PORT}, function (request, response) {
 
     try {
         if (action == "load") {
-            var urlToLoad = params["url"];
+            var urlToLoad = decodeURI(params["url"]);
+            //urlToLoad = urlToLoad.replace("Č", "%C4%8C").replace("Č", "%C4%8C");
             var pageContent = params["content"];
             if (urlToLoad) {
                 if (pageContent) {
@@ -103,7 +104,7 @@ var service = server.listen(${PORT}, function (request, response) {
                         response.close();
                         page.onLoadFinished = null;
                     }
-                    page.open(urlToLoad);
+                    page.open(encodeURI(urlToLoad));
                 }
             } else {
                 response.statusCode = 201;
