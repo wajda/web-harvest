@@ -43,8 +43,6 @@ import org.webharvest.runtime.processors.Processor;
  */
 public class LoopDef extends WebHarvestPluginDef {
 
-    private DefinitionResolver definitionResolver = DefinitionResolver.INSTANCE;
-
     private String maxloops;
     private String item;
     private String index;

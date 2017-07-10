@@ -43,8 +43,6 @@ import org.webharvest.runtime.processors.Processor;
  */
 public class RegexpDef extends WebHarvestPluginDef {
 
-    private DefinitionResolver definitionResolver = DefinitionResolver.INSTANCE;
-
     private String max;
     private String replace;
 

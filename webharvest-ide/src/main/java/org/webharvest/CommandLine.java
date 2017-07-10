@@ -75,9 +75,6 @@ import com.google.inject.Injector;
  */
 public class CommandLine {
 
-    private static DefinitionResolver definitionResolver =
-        DefinitionResolver.INSTANCE;
-
     private static Map<String, String> getArgValue(String[] args, boolean caseSensitive) {
         Map<String, String> params = new HashMap<String, String>();
         for (String curr : args) {
