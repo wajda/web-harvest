@@ -135,20 +135,6 @@ public class CommandLine {
 
             parseDebugModeSettings(params, workingDir);
 
-            // register plugins if specified
-            String pluginsString = params.get("plugins");
-            if (!CommonUtil.isEmpty(pluginsString)) {
-                for (String pluginAndUri : CommonUtil.tokenize(pluginsString, ",")) {
-                    try {
-                        final String pluginClass = StringUtils.substringBefore(pluginAndUri, ":");
-                        final String pluginUri = StringUtils.substringAfter(pluginAndUri, ":");
-                        definitionResolver.registerPlugin(pluginClass, pluginUri);
-                    } catch (PluginException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-
             parseDatabaseDrivers(params);
 
             final String configLowercase = configFilePath.toLowerCase();
@@ -301,8 +287,6 @@ public class CommandLine {
         System.out.println("   proxyntdomain - NTLM authentication scheme - the domain to authenticate within.");
         System.out.println("   loglevel      - specify level of logging for Log4J (trace,info,debug,warn,error,fatal).");
         System.out.println("   logpropsfile  - file path to custom Log4J properties. If specified, loglevel is ignored.");
-        System.out.println("   plugins       - comma-separated list of pairs <plugin-class>[:<uri>], where <plugin-class> is full plugin class name," +
-                "and URI is an XML namespace in which this plugin is declared. If URI is not specified the default WebHarvest schema is assumed.");
         System.out.println("   dbdrivers     - comma-separated list of JAR locations containing database drivers");
         System.out.println("   vars	         - semicolon-separated list of pairs <name>=<value>, where <name> is a name of initial variable " +
                 "of the Web-Harvest context and <value> is its value");
