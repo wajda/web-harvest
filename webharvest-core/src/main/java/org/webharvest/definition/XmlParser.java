@@ -61,7 +61,7 @@ public class XmlParser extends DefaultHandler {
 
     protected static Logger log = LoggerFactory.getLogger(XmlParser.class);
 
-    XmlNode rootNode;
+    private XmlNode rootNode;
 
     // working stack of elements
     private Stack<XmlNode> elementStack = new Stack<XmlNode>();

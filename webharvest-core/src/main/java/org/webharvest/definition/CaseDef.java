@@ -46,8 +46,6 @@ import org.webharvest.runtime.processors.Processor;
  */
 public class CaseDef extends WebHarvestPluginDef {
 
-    private DefinitionResolver definitionResolver = DefinitionResolver.INSTANCE;
-
     private IfDef[] ifDefs;
     private IElementDef elseDef;
 
@@ -63,7 +61,7 @@ public class CaseDef extends WebHarvestPluginDef {
             int index = 0;
             while (it.hasNext()) {
                 XmlNode currParamNode = (XmlNode) it.next();
-                ifDefs[index++] = (IfDef) definitionResolver.createElementDefinition(currParamNode);
+                ifDefs[index++] = (IfDef) DefinitionResolver.INSTANCE.createElementDefinition(currParamNode);
             }
         }
 
