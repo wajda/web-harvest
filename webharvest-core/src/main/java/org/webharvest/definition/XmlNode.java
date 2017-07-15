@@ -45,6 +45,7 @@ import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.webharvest.runtime.processors.Processor;
 
 public class XmlNode implements Serializable {
 

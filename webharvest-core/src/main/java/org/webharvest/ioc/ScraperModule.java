@@ -12,14 +12,7 @@ import org.webharvest.LockedRegistry;
 import org.webharvest.Registry;
 import org.webharvest.ScrapingAware;
 import org.webharvest.WHConstants;
-import org.webharvest.definition.BufferConfigSource;
-import org.webharvest.definition.Config;
-import org.webharvest.definition.ConfigFactory;
-import org.webharvest.definition.ConfigSource;
-import org.webharvest.definition.ConfigSourceFactory;
-import org.webharvest.definition.FileConfigSource;
-import org.webharvest.definition.URLConfigSource;
-import org.webharvest.definition.XMLConfig;
+import org.webharvest.definition.*;
 import org.webharvest.deprecated.runtime.ScraperContext10;
 import org.webharvest.events.DefaultHandlerHolder;
 import org.webharvest.events.EventSink;
@@ -127,6 +120,8 @@ public final class ScraperModule extends AbstractModule {
                 Singleton.class);
         requestStaticInjection(BaseTemplater.class);
         bind(RuntimeConfig.class).in(Singleton.class);
+
+        requestStaticInjection(DefinitionResolver.class);
     }
 
     protected void bindDBConnectionFactory() {
@@ -144,7 +139,7 @@ public final class ScraperModule extends AbstractModule {
 
             @Override
             public DynamicScopeContext create(final Config config) {
-                final DynamicScopeContext context = WHConstants.XMLNS_CORE_10.equals(config.getNamespaceURI())
+                final DynamicScopeContext context = Config.Version.v1 == config.getVersion()
                     ? oldProvider.get() : newProvider.get();
                 // TODO rbala So far this should be enough. Find better option to pass configuration when instantiating context
                 context.setConfig(config);

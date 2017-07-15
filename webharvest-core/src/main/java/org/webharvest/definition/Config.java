@@ -14,6 +14,17 @@ package org.webharvest.definition;
  */
 public interface Config {
 
+    // TODO rbala Missing javadoc documentation
+    enum Version {
+        // TODO rbala Missing javadoc documentation
+        v1,
+        // TODO rbala Missing javadoc documentation
+        v2
+    }
+
+    // TODO rbala Missing javadoc
+    Version getVersion();
+
     /**
      * Gets reference to configuration resource {@link ConfigSource}.
      *
@@ -29,16 +40,6 @@ public interface Config {
      *         been loaded.
      */
     IElementDef getElementDef();
-
-    /**
-     * Gets reference to configuration root element namespace
-     *
-     * @deprecated Provided as a backward compatibility with older version
-     * @return namespace URL or {@link IllegalStateException} in case the
-     *         configuration has not been loaded.
-     */
-    @Deprecated
-    String getNamespaceURI();
 
     /**
      * Loads configuration from resource defined by {@link #getConfigSource()}.

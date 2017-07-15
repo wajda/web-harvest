@@ -34,6 +34,18 @@ package org.webharvest.definition;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.webharvest.WHConstants;
+import org.webharvest.definition.validation.SchemaComponentFactory;
+import org.webharvest.exception.ParserException;
+import org.webharvest.utils.XmlUtil;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
 
 /**
  * Implementation of {@link ConfigSource} capable to work with XML
@@ -47,6 +59,8 @@ import com.google.inject.assistedinject.Assisted;
  * @see IElementDef
  */
 public final class XMLConfig implements Config {
+
+    private static final Logger log = LoggerFactory.getLogger(XMLConfig.class);
 
     private final ConfigSource configSource;
 
@@ -64,6 +78,18 @@ public final class XMLConfig implements Config {
             throw new IllegalArgumentException("ConfigSource is required");
         }
         this.configSource = configSource;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Version getVersion() {
+        if (elementDef == null) {
+            throw new IllegalStateException("Not loaded configuration");
+        }
+
+        return WHConstants.XMLNS_CORE_10.equals(elementDef.getNamespaceURI()) ? Version.v1 : Version.v2;
     }
 
     /**
@@ -90,21 +116,31 @@ public final class XMLConfig implements Config {
      * {@inheritDoc}
      */
     @Override
-    @Deprecated
-    public String getNamespaceURI() {
-        if (elementDef == null) {
-            throw new IllegalStateException("No configuration source provided");
+    public void reload() {
+        /*
+        long startTime = System.currentTimeMillis();
+
+        XmlParser handler = new XmlParser();
+        try {
+            final SAXParserFactory factory = XmlUtil.getSAXParserFactory(false, true);
+            factory.setSchema(SchemaComponentFactory.getSchemaFactory().getSchema());
+            factory.newSAXParser().parse(new InputSource(configSource.getReader()), handler);
+
+            log.info("XML parsed in "
+                    + (System.currentTimeMillis() - startTime) + "ms.");
+
+        } catch (IOException e) {
+            throw new ParserException(e.getMessage(), e);
+        } catch (ParserConfigurationException e) {
+            throw new ParserException(e.getMessage(), e);
+        } catch (SAXException e) {
+            throw new ParserException(e.getMessage(), e);
         }
 
-        return elementDef.getNamespaceURI();
-    }
+        this.elementDef = new ElementDefProxy(handler.rootNode);
+        */
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void reload() {
-        this.elementDef = XmlParser.parse(configSource);
+       this.elementDef = XmlParser.parse(configSource);
     }
 
 }

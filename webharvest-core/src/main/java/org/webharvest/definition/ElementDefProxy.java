@@ -55,12 +55,12 @@ public class ElementDefProxy implements IElementDef {
 
     @Override
     public int getLineNumber() {
-        return node.getLineNumber();
+        return getDelegate().getLineNumber();
     }
 
     @Override
     public int getColumnNumber() {
-        return node.getColumnNumber();
+        return getDelegate().getColumnNumber();
     }
 
     @Override
