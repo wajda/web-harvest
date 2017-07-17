@@ -114,6 +114,7 @@ public final class ScraperModule extends AbstractModule {
         bindScraperContext();
         bindDebugFileLogger();
         bindStatusHolder();
+        bindConfigParser();
 
         // FIXME rbala Moved from ConfigModule
         bind(ScriptEngineFactory.class).to(JSRScriptEngineFactory.class).in(
@@ -160,6 +161,10 @@ public final class ScraperModule extends AbstractModule {
             .in(ScrapingScope.class);
         bind(Monitor.Guard.class).to(RunningStatusGuard.class)
             .in(ScrapingScope.class);
+    }
+
+    protected void bindConfigParser() {
+        bind(ConfigParser.class).to(SAXConfigParser.class);
     }
 
     // FIXME rbala Plain old approach to guice's factory binding. Please consider it as temporary workaround. Can stay longer then actual work on 2.1 version.

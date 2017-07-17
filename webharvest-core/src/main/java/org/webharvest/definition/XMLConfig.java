@@ -37,15 +37,6 @@ import com.google.inject.assistedinject.Assisted;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.webharvest.WHConstants;
-import org.webharvest.definition.validation.SchemaComponentFactory;
-import org.webharvest.exception.ParserException;
-import org.webharvest.utils.XmlUtil;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-import java.io.IOException;
 
 /**
  * Implementation of {@link ConfigSource} capable to work with XML
@@ -64,6 +55,8 @@ public final class XMLConfig implements Config {
 
     private final ConfigSource configSource;
 
+    private final ConfigParser configParser;
+
     private ElementDefProxy elementDef;
 
     /**
@@ -73,11 +66,15 @@ public final class XMLConfig implements Config {
      * @param configSource reference to configuration resource.
      */
     @Inject
-    public XMLConfig(@Assisted final ConfigSource configSource) {
+    public XMLConfig(@Assisted final ConfigSource configSource, ConfigParser configParser) {
         if (configSource == null) {
             throw new IllegalArgumentException("ConfigSource is required");
         }
+        if (configParser == null) {
+            throw new IllegalArgumentException("ConfigParser is required");
+        }
         this.configSource = configSource;
+        this.configParser = configParser;
     }
 
     /**
@@ -117,30 +114,7 @@ public final class XMLConfig implements Config {
      */
     @Override
     public void reload() {
-        /*
-        long startTime = System.currentTimeMillis();
-
-        XmlParser handler = new XmlParser();
-        try {
-            final SAXParserFactory factory = XmlUtil.getSAXParserFactory(false, true);
-            factory.setSchema(SchemaComponentFactory.getSchemaFactory().getSchema());
-            factory.newSAXParser().parse(new InputSource(configSource.getReader()), handler);
-
-            log.info("XML parsed in "
-                    + (System.currentTimeMillis() - startTime) + "ms.");
-
-        } catch (IOException e) {
-            throw new ParserException(e.getMessage(), e);
-        } catch (ParserConfigurationException e) {
-            throw new ParserException(e.getMessage(), e);
-        } catch (SAXException e) {
-            throw new ParserException(e.getMessage(), e);
-        }
-
-        this.elementDef = new ElementDefProxy(handler.rootNode);
-        */
-
-       this.elementDef = XmlParser.parse(configSource);
+       this.elementDef = configParser.parse(configSource);
     }
 
 }

@@ -33,7 +33,7 @@ public class XMLConfigTest extends UnitilsTestNG {
     @BeforeMethod
     public void setUp() {
         mockReader = new StringReader(BASIC_CONFIG_SKELETON);
-        config = new XMLConfig(mockConfigSource);
+        config = new XMLConfig(mockConfigSource, null);
     }
 
     @AfterMethod
@@ -44,7 +44,7 @@ public class XMLConfigTest extends UnitilsTestNG {
 
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testConstructorWithoutSource() {
-        new XMLConfig(null);
+        new XMLConfig(null, null);
     }
 
     @Test(expectedExceptions=IllegalStateException.class)

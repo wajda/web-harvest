@@ -21,7 +21,7 @@ public class XmlNodeTestUtils {
     public static XmlNode createXmlNode(final String xmlPart, final String namespace) {
         final StringBuilder builder = new StringBuilder().append("<config ").
             append(namespace).append(">").append(xmlPart).append("</config>");
-        final XmlNode configNode = XmlParser.parse(
+        final XmlNode configNode = new SAXConfigParser().parse(
                 new BufferConfigSource(builder.toString())).getNode();
 
         return (XmlNode) configNode.getElementList().get(0);

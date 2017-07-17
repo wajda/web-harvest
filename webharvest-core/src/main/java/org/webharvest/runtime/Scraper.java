@@ -43,7 +43,7 @@ import org.webharvest.events.ScraperExecutionErrorEvent;
 import org.webharvest.events.ScraperExecutionStartEvent;
 import org.webharvest.events.ScraperExecutionStoppedEvent;
 import org.webharvest.runtime.processors.Processor;
-import org.webharvest.runtime.processors.ProcessorResolver;
+import org.webharvest.runtime.processors.ProcessorFactory;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -66,7 +66,7 @@ public class Scraper implements WebScraper {
         eventBus.post(new ScraperExecutionStartEvent(this));
 
         try {
-            final Processor processor = ProcessorResolver.createProcessor(
+            final Processor processor = ProcessorFactory.INSTANCE.createProcessor(context,
                     context.getConfig().getElementDef());
             if (processor != null) {
                 processor.run(context);

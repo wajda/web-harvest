@@ -3,7 +3,6 @@ package org.webharvest.runtime.processors;
 import org.webharvest.definition.IElementDef;
 import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.DynamicScopeContext;
-import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.variables.EmptyVariable;
 import org.webharvest.runtime.variables.ListVariable;
 import org.webharvest.runtime.variables.Variable;
@@ -24,8 +23,7 @@ public class BodyProcessor extends AbstractProcessor<IElementDef> {
             return context.executeWithinNewContext(new Callable<Variable>() {
                 @Override
                 public Variable call() throws Exception {
-                    final Processor processor = ProcessorResolver
-                            .createProcessor(defs[0]);
+                    final Processor processor = ProcessorFactory.INSTANCE.createProcessor(context, defs[0]);
                     processor.setParentProcessor(getParentProcessor());
                     return CommonUtil.createVariable(processor.run(context));
                 }
@@ -37,8 +35,7 @@ public class BodyProcessor extends AbstractProcessor<IElementDef> {
             public Variable call() throws Exception {
                 final ListVariable result = new ListVariable();
                 for (IElementDef def : defs) {
-                    final Processor processor = ProcessorResolver
-                            .createProcessor(def);
+                    final Processor processor = ProcessorFactory.INSTANCE.createProcessor(context, def);
                     processor.setParentProcessor(getParentProcessor());
                     final Variable variable = processor.run(context);
                     if (!variable.isEmpty()) {

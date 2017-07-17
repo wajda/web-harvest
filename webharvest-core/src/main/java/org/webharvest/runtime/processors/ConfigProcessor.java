@@ -42,7 +42,7 @@ public final class ConfigProcessor extends AbstractProcessor<ConfigDef> {
         // within 'config' element body would not be available in the scraper
         // context at the end of its execution.
         for (IElementDef elementDef : getElementDef().getOperationDefs()) {
-            ProcessorResolver.createProcessor(elementDef).run(context);
+            ProcessorFactory.INSTANCE.createProcessor(context, elementDef).run(context);
         }
 
         return EmptyVariable.INSTANCE;

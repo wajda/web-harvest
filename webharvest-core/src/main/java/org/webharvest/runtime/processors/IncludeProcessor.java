@@ -86,7 +86,7 @@ public class IncludeProcessor extends AbstractProcessor<IncludeDef> {
         final Config config = includeConfig(context, path);
 
         // TODO rbala Unify processors execution with Scraper (remove duplicate code)!
-        ProcessorResolver.createProcessor(config.getElementDef()).run(
+        ProcessorFactory.INSTANCE.createProcessor(context, config.getElementDef()).run(
                 NestedContextFactory.create(context));
 
         if (Thread.currentThread().isInterrupted()) {
