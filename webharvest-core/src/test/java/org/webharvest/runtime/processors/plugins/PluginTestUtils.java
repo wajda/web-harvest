@@ -54,7 +54,7 @@ public class PluginTestUtils {
     }
 
     private static WebHarvestPluginDef createElementDefinition(final XmlNode xml) {
-        return (WebHarvestPluginDef) DefinitionResolver.INSTANCE.
+        return (WebHarvestPluginDef) new DefinitionResolver().
             createElementDefinition(xml);
     }
 

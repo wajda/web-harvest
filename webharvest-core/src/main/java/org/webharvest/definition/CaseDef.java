@@ -39,6 +39,7 @@ package org.webharvest.definition;
 import java.util.Iterator;
 import java.util.List;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 /**
@@ -61,7 +62,7 @@ public class CaseDef extends WebHarvestPluginDef {
             int index = 0;
             while (it.hasNext()) {
                 XmlNode currParamNode = (XmlNode) it.next();
-                ifDefs[index++] = (IfDef) DefinitionResolver.INSTANCE.createElementDefinition(currParamNode);
+                ifDefs[index++] = (IfDef) InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(currParamNode);
             }
         }
 

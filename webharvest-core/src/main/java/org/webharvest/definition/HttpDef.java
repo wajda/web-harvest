@@ -67,6 +67,7 @@ public class HttpDef extends WebHarvestPluginDef {
     private String retryDelay;
     private String retryDelayFactor;
 
+    @Deprecated
     public HttpDef(XmlNode xmlNode, Class<? extends Processor> processorClass) {
         super(xmlNode, processorClass);
 
@@ -136,4 +137,53 @@ public class HttpDef extends WebHarvestPluginDef {
     public String getIgnoreResponseBody() {
         return ignoreResponseBody;
     }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setCharset(String charset) {
+        this.charset = charset;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setCookiePolicy(String cookiePolicy) {
+        this.cookiePolicy = cookiePolicy;
+    }
+
+    public void setFollowRedirects(String followRedirects) {
+        this.followRedirects = followRedirects;
+    }
+
+    public void setIgnoreResponseBody(String ignoreResponseBody) {
+        this.ignoreResponseBody = ignoreResponseBody;
+    }
+
+    public void setRetryAttempts(String retryAttempts) {
+        this.retryAttempts = retryAttempts;
+    }
+
+    public void setRetryDelay(String retryDelay) {
+        this.retryDelay = retryDelay;
+    }
+
+    public void setRetryDelayFactor(String retryDelayFactor) {
+        this.retryDelayFactor = retryDelayFactor;
+    }
+
 }

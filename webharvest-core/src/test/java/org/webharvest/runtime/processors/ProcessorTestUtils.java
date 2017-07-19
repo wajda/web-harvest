@@ -48,7 +48,7 @@ public final class ProcessorTestUtils {
 
     @SuppressWarnings({ "unchecked" })
     public static Processor processor(XmlNode xml) {
-        return ProcessorFactory.INSTANCE.createProcessor(null, DefinitionResolver.INSTANCE
+        return ProcessorFactory.INSTANCE.createProcessor(null, new DefinitionResolver()
                 .createElementDefinition(xml));
     }
 

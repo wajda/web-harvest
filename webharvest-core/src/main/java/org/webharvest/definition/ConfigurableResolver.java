@@ -33,7 +33,11 @@
 
 package org.webharvest.definition;
 
+import org.webharvest.exception.PluginException;
 import org.webharvest.runtime.processors.WebHarvestPlugin;
+import org.webharvest.utils.ClassLoaderUtil;
+
+import java.util.Set;
 
 /**
  * Interface to be implemented by the web harvest configuration elements
@@ -74,5 +78,39 @@ public interface ConfigurableResolver {
      *            XML namespace under which plugin is going to be registered.
      */
     void registerPlugin(ElementInfo elementInfo, String namespace);
+
+    @Deprecated
+    void registerPlugin(String className, String uri) throws PluginException;
+
+    @Deprecated
+    void unregisterPlugin(String className, String uri);
+
+    @Deprecated
+    boolean isPluginRegistered(String className, String uri);
+
+    /**
+     * Creates proper element definition instance based on given xml node
+     * from input configuration.
+     *
+     * @param node node
+     * @return Instance of IElementDef, or exception is thrown if cannot find
+     *         appropriate element definition.
+     */
+    IElementDef createElementDefinition(XmlNode node);
+
+    /**
+     * Returns names of all known elements.
+     */
+    @Deprecated
+    Set<ElementName> getElementNames();
+
+    /**
+     * @param name Name of the element
+     * @param uri  URI of the element
+     * @return Instance of ElementInfo class for the specified element name,
+     *         or null if no element is defined.
+     */
+    @Deprecated
+    ElementInfo getElementInfo(String name, String uri) ;
 
 }

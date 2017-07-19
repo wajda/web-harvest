@@ -38,7 +38,7 @@ package org.webharvest.gui;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.webharvest.WHConstants;
-import org.webharvest.definition.DefinitionResolver;
+import org.webharvest.definition.ConfigurableResolver;
 import org.webharvest.exception.PluginException;
 import org.webharvest.gui.component.*;
 import org.webharvest.gui.settings.SettingsManager;
@@ -47,6 +47,7 @@ import org.webharvest.gui.settings.db.DatabaseDriversPanel;
 import org.webharvest.gui.settings.db.DatabaseDriversPresenter;
 import org.webharvest.gui.settings.validation.XmlSchemasPanel;
 import org.webharvest.gui.settings.validation.XmlSchemasPresenter;
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.utils.CommonUtil;
 
 import javax.swing.*;
@@ -66,8 +67,6 @@ import java.nio.charset.Charset;
 import java.util.*;
 
 public class SettingsDialog extends CommonDialog implements ChangeListener {
-
-    private DefinitionResolver definitionResolver = DefinitionResolver.INSTANCE;
 
     private SettingsManager settingsManager = new SimpleSettingsManager();
 
@@ -114,13 +113,13 @@ public class SettingsDialog extends CommonDialog implements ChangeListener {
 
             String errorMessage = null;
 
-            final boolean isAlreadyRegistered = definitionResolver.isPluginRegistered(className, uri);
+            final boolean isAlreadyRegistered = InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).isPluginRegistered(className, uri);
             if (!isAlreadyRegistered || throwErrIfRegistered) {
                 try {
                     if (isAlreadyRegistered) {
-                        definitionResolver.unregisterPlugin(className, uri);
+                        InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).unregisterPlugin(className, uri);
                     }
-                    definitionResolver.registerPlugin(className, uri);
+                    InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).registerPlugin(className, uri);
                 } catch (PluginException e) {
                     errorMessage = e.getMessage();
                 }
@@ -414,8 +413,8 @@ public class SettingsDialog extends CommonDialog implements ChangeListener {
                     if (!pluginInfo.equals(oldPluginInfo)) {
                         boolean isSet = pluginListModel.setElement(pluginInfo, index);
                         if (isSet) {
-                            definitionResolver.unregisterPlugin(oldPluginInfo.getClassName(), pluginInfo.getUri());
-                            definitionResolver.registerPlugin(pluginInfo.getClassName(), pluginInfo.getUri());
+                            InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).unregisterPlugin(oldPluginInfo.getClassName(), pluginInfo.getUri());
+                            InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).registerPlugin(pluginInfo.getClassName(), pluginInfo.getUri());
                         }
                     }
                 }
@@ -426,7 +425,7 @@ public class SettingsDialog extends CommonDialog implements ChangeListener {
             public void actionPerformed(ActionEvent e) {
                 int index = pluginsList.getSelectedIndex();
                 if (index >= 0) {
-                    definitionResolver.unregisterPlugin(pluginsList.getSelectedValue().toString(), pluginNamespaceUriField.getText().trim());
+                    InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).unregisterPlugin(pluginsList.getSelectedValue().toString(), pluginNamespaceUriField.getText().trim());
                     pluginListModel.remove(index);
                     pluginsList.setSelectedIndex(Math.min(index, pluginListModel.size() - 1));
                 }
@@ -546,15 +545,15 @@ public class SettingsDialog extends CommonDialog implements ChangeListener {
             PluginInfo item = (PluginInfo) pluginListModel.get(i);
             listSet.add(item);
             if (item.isValid() && !pluginSet.contains(item)) {
-                definitionResolver.unregisterPlugin(item.getClassName(), item.getUri());
+                InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).unregisterPlugin(item.getClassName(), item.getUri());
             }
         }
 
         // register plugins unregistered during this setting session
         for (PluginInfo currPlugin : (Iterable<? extends PluginInfo>) CollectionUtils.subtract(pluginSet, listSet)) {
-            if (!definitionResolver.isPluginRegistered(currPlugin.getClassName(), currPlugin.getUri())) {
+            if (!InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).isPluginRegistered(currPlugin.getClassName(), currPlugin.getUri())) {
                 try {
-                    definitionResolver.registerPlugin(currPlugin.getClassName(), currPlugin.getUri());
+                    InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).registerPlugin(currPlugin.getClassName(), currPlugin.getUri());
                 } catch (PluginException e) {
                     // do nothing - ignore
                 }

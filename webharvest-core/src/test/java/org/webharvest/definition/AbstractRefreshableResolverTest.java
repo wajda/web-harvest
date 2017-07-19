@@ -5,6 +5,9 @@ import static org.testng.AssertJUnit.assertFalse;
 import org.testng.annotations.Test;
 import org.unitils.UnitilsTestNG;
 import org.unitils.mock.Mock;
+import org.webharvest.exception.PluginException;
+
+import java.util.Set;
 
 public class AbstractRefreshableResolverTest extends UnitilsTestNG {
 
@@ -40,5 +43,36 @@ public class AbstractRefreshableResolverTest extends UnitilsTestNG {
                 final String namespace) {
             throw new UnsupportedOperationException("TEST MOCK");
         }
+
+        @Override
+        public void registerPlugin(String className, String uri) throws PluginException {
+            throw new UnsupportedOperationException("TEST MOCK");
+        }
+
+        @Override
+        public void unregisterPlugin(String className, String uri) {
+            throw new UnsupportedOperationException("TEST MOCK");
+        }
+
+        @Override
+        public boolean isPluginRegistered(String className, String uri) {
+            throw new UnsupportedOperationException("TEST MOCK");
+        }
+
+        @Override
+        public IElementDef createElementDefinition(XmlNode node) {
+             throw new UnsupportedOperationException("TEST MOCK");
+        }
+
+        @Override
+        public Set<ElementName> getElementNames() {
+            throw new UnsupportedOperationException("TEST MOCK");
+        }
+
+        @Override
+        public ElementInfo getElementInfo(String name, String uri) {
+            throw new UnsupportedOperationException("TEST MOCK");
+        }
+
     }
 }

@@ -61,15 +61,6 @@ import org.webharvest.utils.ClassLoaderUtil;
 @SuppressWarnings({"UnusedDeclaration"})
 public class DefinitionResolver extends AbstractRefreshableResolver {
 
-    /**
-     * Singleton instance reference.
-     */
-    public static final DefinitionResolver INSTANCE;
-
-    static {
-        INSTANCE = new DefinitionResolver();
-    }
-
     private final static class PluginClassKey {
 
         private PluginClassKey(String className, String uri) {
@@ -105,7 +96,7 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
         new HashMap<ElementName, Class[]>();
 
 
-    private DefinitionResolver() {
+    public DefinitionResolver() {
         // TODO Remove along with deprecated code
         addPostProcessor(new AnnotatedPluginsPostProcessor(
             "org.webharvest.deprecated.runtime.processors"));
@@ -167,6 +158,7 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
     }
 
     @Deprecated
+    @Override
     public void registerPlugin(String className, String uri) throws PluginException {
         registerPlugin(ClassLoaderUtil.getPluginClass(className), WebHarvestPluginDef.class, false, uri);
     }
@@ -201,6 +193,7 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
     }
 
     @Deprecated
+
     public boolean isPluginRegistered(Class pluginClass, String uri) {
         return pluginClass != null && isPluginRegistered(pluginClass.getName(), uri);
     }
@@ -223,13 +216,9 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
     }
 
     /**
-     * Creates proper element definition instance based on given xml node
-     * from input configuration.
-     *
-     * @param node node
-     * @return Instance of IElementDef, or exception is thrown if cannot find
-     *         appropriate element definition.
+     * {@inheritDoc}
      */
+    @Override
     public IElementDef createElementDefinition(XmlNode node) {
         final String nodeName = node.getName();
         final String nodeUri = node.getUri();

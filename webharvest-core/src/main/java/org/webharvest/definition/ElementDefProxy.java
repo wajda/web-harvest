@@ -2,6 +2,7 @@ package org.webharvest.definition;
 
 import java.util.List;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 public class ElementDefProxy implements IElementDef {
@@ -42,7 +43,8 @@ public class ElementDefProxy implements IElementDef {
 
     private IElementDef getDelegate() {
         if (delegate == null) {
-            this.delegate = DefinitionResolver.INSTANCE.createElementDefinition(node);
+            //helps with plugin's dependency injection (using Guice).
+            this.delegate = InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(node);
         }
 
         return delegate;

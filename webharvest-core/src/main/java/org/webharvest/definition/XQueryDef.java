@@ -39,14 +39,13 @@ package org.webharvest.definition;
 import java.util.Iterator;
 import java.util.List;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 /**
  * Definition of XQuery processor.
  */
 public class XQueryDef extends WebHarvestPluginDef {
-
-    private DefinitionResolver definitionResolver = DefinitionResolver.INSTANCE;
 
     private IElementDef xqDef;
 
@@ -68,7 +67,7 @@ public class XQueryDef extends WebHarvestPluginDef {
             int index = 0;
             while (it.hasNext()) {
                 XmlNode currParamNode =  (XmlNode) it.next();
-                externalParamDefs[index++] = (XQueryExternalParamDef) definitionResolver.createElementDefinition(currParamNode);
+                externalParamDefs[index++] = (XQueryExternalParamDef) InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(currParamNode);
             }
         }
     }

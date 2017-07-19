@@ -116,6 +116,8 @@ public final class ScraperModule extends AbstractModule {
         bindStatusHolder();
         bindConfigParser();
 
+        bind(ConfigurableResolver.class).to(DefinitionResolver.class).in(Singleton.class);
+
         // FIXME rbala Moved from ConfigModule
         bind(ScriptEngineFactory.class).to(JSRScriptEngineFactory.class).in(
                 Singleton.class);

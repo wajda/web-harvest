@@ -39,7 +39,7 @@ package org.webharvest.gui;
 import org.webharvest.TransformationException;
 import org.webharvest.Transformer;
 import org.webharvest.WHConstants;
-import org.webharvest.definition.DefinitionResolver;
+import org.webharvest.definition.ConfigurableResolver;
 import org.webharvest.definition.validation.SchemaResolver;
 import org.webharvest.definition.validation.SchemaResolverPostProcessor;
 import org.webharvest.definition.validation.SchemaSource;
@@ -48,10 +48,10 @@ import org.webharvest.definition.validation.URIToSchemaSourceTransformer;
 import org.webharvest.exception.PluginException;
 import org.webharvest.gui.settings.validation.FilePathToURITransformer;
 import org.webharvest.gui.settings.validation.XmlSchemaDTO;
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.utils.CommonUtil;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.URI;
@@ -107,8 +107,6 @@ public class Settings implements Serializable, SchemaResolverPostProcessor {
 
     // list of recently open files
     private List recentFiles = new LinkedList();
-
-    private DefinitionResolver definitionResolver = DefinitionResolver.INSTANCE;
 
     private final Transformer<String, SchemaSource> schemaTransformer =
         new TransformerPair<String, URI, SchemaSource>(
@@ -457,7 +455,7 @@ public class Settings implements Serializable, SchemaResolverPostProcessor {
         for (int i = 0; i < pluginCount; i++) {
             plugins[i] = new PluginInfo(props.getProperty("plugin" + i + ".class"), props.getProperty("plugin" + i + ".uri"), null);
             try {
-                definitionResolver.registerPlugin(plugins[i].getClassName(), plugins[i].getUri());
+                InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).registerPlugin(plugins[i].getClassName(), plugins[i].getUri());
             } catch (PluginException e) {
                 e.printStackTrace();
             }
@@ -514,7 +512,7 @@ public class Settings implements Serializable, SchemaResolverPostProcessor {
         for (int i = 0; i < pluginsCount; i++) {
             plugins[i] = new PluginInfo(readString(in, ""), WHConstants.XMLNS_CORE_10, null);
             try {
-                definitionResolver.registerPlugin(plugins[i].getClassName(), WHConstants.XMLNS_CORE_10);
+                InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).registerPlugin(plugins[i].getClassName(), WHConstants.XMLNS_CORE_10);
             } catch (PluginException e) {
                 e.printStackTrace();
             }
