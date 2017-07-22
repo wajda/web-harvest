@@ -2,6 +2,9 @@ package org.webharvest.ioc;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +71,9 @@ public final class ScraperModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+        bind(new TypeLiteral<List<? extends ResolverPostProcessor>>(){})
+                .annotatedWith(Names.named("resolverPostProcessors")).toInstance(Arrays.asList(new AnnotatedPluginsPostProcessor("org.webharvest.deprecated.runtime.processors"), new AnnotatedPluginsPostProcessor( "org.webharvest.runtime.processors")));
+
         bind(ScrapingAwareHelper.class).toInstance(new ScrapingAwareHelper());
         bindListener(Matchers.any(), new PostConstructListener());
 
@@ -116,7 +122,7 @@ public final class ScraperModule extends AbstractModule {
         bindStatusHolder();
         bindConfigParser();
 
-        bind(ConfigurableResolver.class).to(DefinitionResolver.class).in(Singleton.class);
+        bind(ConfigurableResolver.class).toProvider(DefinitionResolverProvider.class).in(Singleton.class);
 
         // FIXME rbala Moved from ConfigModule
         bind(ScriptEngineFactory.class).to(JSRScriptEngineFactory.class).in(
@@ -125,6 +131,10 @@ public final class ScraperModule extends AbstractModule {
         bind(RuntimeConfig.class).in(Singleton.class);
 
         requestStaticInjection(DefinitionResolver.class);
+    }
+
+    protected void bindConfigurableResolver() {
+
     }
 
     protected void bindDBConnectionFactory() {

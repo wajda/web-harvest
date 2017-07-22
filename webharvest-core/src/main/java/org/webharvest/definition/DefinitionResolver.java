@@ -37,11 +37,9 @@
 package org.webharvest.definition;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import com.google.inject.Singleton;
 import org.webharvest.AlreadyBoundException;
 import org.webharvest.annotation.ElementInfoFactory;
 import org.webharvest.exception.ConfigurationException;
@@ -58,7 +56,7 @@ import org.webharvest.utils.ClassLoaderUtil;
  * @author Vladimir Nikic
  * @author Robert Bala
  */
-@SuppressWarnings({"UnusedDeclaration"})
+@Singleton
 public class DefinitionResolver extends AbstractRefreshableResolver {
 
     private final static class PluginClassKey {
@@ -94,18 +92,6 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
     // map of external plugin dependencies
     private Map<ElementName, Class[]> externalPluginDependencies =
         new HashMap<ElementName, Class[]>();
-
-
-    public DefinitionResolver() {
-        // TODO Remove along with deprecated code
-        addPostProcessor(new AnnotatedPluginsPostProcessor(
-            "org.webharvest.deprecated.runtime.processors"));
-
-        addPostProcessor(new AnnotatedPluginsPostProcessor(
-            "org.webharvest.runtime.processors"));
-
-        refresh();
-    }
 
     @Deprecated
     private void registerPlugin(final Class pluginClass,
