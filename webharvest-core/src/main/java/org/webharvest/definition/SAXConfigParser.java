@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.webharvest.WHConstants;
 import org.webharvest.definition.validation.SchemaComponentFactory;
 import org.webharvest.exception.ParserException;
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.utils.Stack;
 import org.webharvest.utils.XmlUtil;
 import org.xml.sax.*;
@@ -125,7 +126,7 @@ public class SAXConfigParser implements ConfigParser {
      * {@inheritDoc}
      */
     @Override
-    public ElementDefProxy parse(ConfigSource configSource) {
+    public IElementDef parse(ConfigSource configSource) {
         long startTime = System.currentTimeMillis();
 
         Handler handler = new Handler();
@@ -145,7 +146,7 @@ public class SAXConfigParser implements ConfigParser {
             throw new ParserException(e.getMessage(), e);
         }
 
-        return new ElementDefProxy(handler.rootNode);
+        return InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(handler.rootNode);
     }
 
 }

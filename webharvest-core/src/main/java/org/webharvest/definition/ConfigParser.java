@@ -8,6 +8,6 @@ package org.webharvest.definition;
 public interface ConfigParser {
 
     // TODO rbala Missing Javadoc
-    ElementDefProxy parse(ConfigSource configSource);
+    IElementDef parse(ConfigSource configSource);
 
 }

@@ -67,7 +67,7 @@ public class CaseDef extends WebHarvestPluginDef {
         }
 
         XmlNode elseDefNode = xmlNode.getFirstSubnode(new ElementName("else", xmlNode.getUri()));
-        elseDef = elseDefNode == null ? null : new ElementDefProxy(elseDefNode);
+        elseDef = elseDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(elseDefNode);
     }
 
     public IfDef[] getIfDefs() {

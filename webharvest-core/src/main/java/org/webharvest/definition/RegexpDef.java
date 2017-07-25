@@ -36,6 +36,7 @@
 */
 package org.webharvest.definition;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 /**
@@ -67,13 +68,13 @@ public class RegexpDef extends WebHarvestPluginDef {
         this.flagCanoneq = xmlNode.getAttribute("flag-canoneq");
 
         XmlNode regexpPatternDefNode = xmlNode.getFirstSubnode(new ElementName("regexp-pattern", xmlNode.getUri()));
-        regexpPatternDef = regexpPatternDefNode == null ? null : new ElementDefProxy(regexpPatternDefNode);
+        regexpPatternDef = regexpPatternDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(regexpPatternDefNode);
 
         XmlNode regexpSourceDefNode = xmlNode.getFirstSubnode(new ElementName("regexp-source", xmlNode.getUri()));
-        regexpSourceDef = regexpSourceDefNode == null ? null : new ElementDefProxy(regexpSourceDefNode);
+        regexpSourceDef = regexpSourceDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(regexpSourceDefNode);
 
         XmlNode regexpResultDefNode = xmlNode.getFirstSubnode(new ElementName("regexp-result", xmlNode.getUri()));
-        regexpResultDef = regexpResultDefNode == null ? null : new ElementDefProxy(regexpResultDefNode);
+        regexpResultDef = regexpResultDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(regexpResultDefNode);
     }
 
     public String getMax() {

@@ -57,4 +57,15 @@ public class WebHarvestPluginDef extends AbstractElementDef {
         throw new PluginException("Cannot create plugin!");
     }
 
+    @Override
+    public String getNamespaceURI() {
+        return xmlNode.getUri();
+    }
+
+    @Deprecated
+    @Override
+    public XmlNode getNode() {
+        return xmlNode;
+    }
+
 }

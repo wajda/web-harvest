@@ -36,6 +36,7 @@
 */
 package org.webharvest.definition;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 /**
@@ -50,10 +51,10 @@ public class TryDef extends WebHarvestPluginDef {
         super(xmlNode, processorClass);
 
         XmlNode tryBodyDefNode = xmlNode.getFirstSubnode(new ElementName("body", xmlNode.getUri()));
-        this.tryBodyDef = tryBodyDefNode == null ? null : new ElementDefProxy(tryBodyDefNode);
+        this.tryBodyDef = tryBodyDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(tryBodyDefNode);
 
         XmlNode catchValueDefNode = xmlNode.getFirstSubnode(new ElementName("catch", xmlNode.getUri()));
-        this.catchValueDef = catchValueDefNode == null ? null : new ElementDefProxy(catchValueDefNode);
+        this.catchValueDef = catchValueDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(catchValueDefNode);
     }
 
     public IElementDef getTryBodyDef() {

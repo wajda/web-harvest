@@ -57,7 +57,7 @@ public final class XMLConfig implements Config {
 
     private final ConfigParser configParser;
 
-    private ElementDefProxy elementDef;
+    private IElementDef elementDef;
 
     /**
      * Default class constructor specifying {@link ConfigSource} object

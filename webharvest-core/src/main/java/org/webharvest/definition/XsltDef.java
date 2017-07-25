@@ -36,6 +36,7 @@
 */
 package org.webharvest.definition;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 /**
@@ -51,10 +52,10 @@ public class XsltDef extends WebHarvestPluginDef {
         super(xmlNode, processorClass);
 
         XmlNode xmlDefNode = xmlNode.getFirstSubnode(new ElementName("xml", xmlNode.getUri()));
-        xmlDef = xmlDefNode == null ? null : new ElementDefProxy(xmlDefNode);
+        xmlDef = xmlDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(xmlDefNode);
 
         XmlNode stylesheetDefNode = xmlNode.getFirstSubnode(new ElementName("stylesheet", xmlNode.getUri()));
-        stylesheetDef = stylesheetDefNode == null ? null : new ElementDefProxy(stylesheetDefNode);
+        stylesheetDef = stylesheetDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(stylesheetDefNode);
     }
 
     public IElementDef getStylesheetDef() {

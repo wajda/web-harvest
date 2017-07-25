@@ -7,6 +7,7 @@ import org.unitils.UnitilsTestNG;
 import org.unitils.mock.Mock;
 import org.webharvest.exception.PluginException;
 
+import javax.inject.Provider;
 import java.util.Set;
 
 public class AbstractRefreshableResolverTest extends UnitilsTestNG {
@@ -14,7 +15,7 @@ public class AbstractRefreshableResolverTest extends UnitilsTestNG {
     private Mock<ResolverPostProcessor> postProcessor;
 
     private AbstractRefreshableResolver resolver =
-        new MockAbstractConfigurableResolver();
+        new MockAbstractConfigurableResolver(null);
 
     @Test
     public void postProcessorExecutedOnRefresh() {
@@ -37,6 +38,10 @@ public class AbstractRefreshableResolverTest extends UnitilsTestNG {
 
     private class MockAbstractConfigurableResolver
         extends AbstractRefreshableResolver {
+
+        public MockAbstractConfigurableResolver(Provider<ElementsRegistry> registryProvider) {
+            super(registryProvider);
+        }
 
         @Override
         public void registerPlugin(final ElementInfo elementInfo,

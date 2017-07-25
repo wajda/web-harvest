@@ -36,6 +36,7 @@
 */
 package org.webharvest.definition;
 
+import org.webharvest.ioc.InjectorHelper;
 import org.webharvest.runtime.processors.Processor;
 
 /**
@@ -55,10 +56,10 @@ public class LoopDef extends WebHarvestPluginDef {
         super(xmlNode, processorClass);
 
         XmlNode loopValueDefNode = xmlNode.getFirstSubnode(new ElementName("list", xmlNode.getUri()));
-        this.loopValueDef = loopValueDefNode == null ? null : new ElementDefProxy(loopValueDefNode);
+        this.loopValueDef = loopValueDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(loopValueDefNode);
 
         XmlNode loopBodyDefNode = xmlNode.getFirstSubnode(new ElementName("body", xmlNode.getUri()));
-        this.loopBodyDef = loopBodyDefNode == null ? null : new ElementDefProxy(loopBodyDefNode);
+        this.loopBodyDef = loopBodyDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(loopBodyDefNode);
 
         this.maxloops = xmlNode.getAttribute("maxloops");
         this.item = xmlNode.getAttribute("item");

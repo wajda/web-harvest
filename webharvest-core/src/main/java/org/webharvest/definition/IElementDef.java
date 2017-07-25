@@ -68,4 +68,16 @@ public interface IElementDef extends PluginDef {
     // TODO Decide to keep it as a part of this interface or move somewhere else (associated with XmlNode)
     int getColumnNumber();
 
+    /**
+     * We only need this method in order to determine namespace version in {@link XMLConfig} . It can be done the other way.
+     * @deprecated
+     *
+     * @return
+     */
+    @Deprecated
+    String getNamespaceURI();
+
+    @Deprecated
+    XmlNode getNode();
+
 }

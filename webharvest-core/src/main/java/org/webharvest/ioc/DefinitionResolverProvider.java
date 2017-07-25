@@ -1,9 +1,6 @@
 package org.webharvest.ioc;
 
-import org.webharvest.definition.AnnotatedPluginsPostProcessor;
-import org.webharvest.definition.ConfigurableResolver;
-import org.webharvest.definition.DefinitionResolver;
-import org.webharvest.definition.ResolverPostProcessor;
+import org.webharvest.definition.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,10 +14,13 @@ import java.util.List;
 // TODO rbala Missing unit tests
 public class DefinitionResolverProvider implements Provider<ConfigurableResolver> {
 
+    private final Provider<ElementsRegistry> registryProvider;
+
     private final List<? extends ResolverPostProcessor> postProcessors;
 
     @Inject
-    public DefinitionResolverProvider(@Named("resolverPostProcessors") List<? extends ResolverPostProcessor> postProcessors) {
+    public DefinitionResolverProvider(@Named("resolverPostProcessors") List<? extends ResolverPostProcessor> postProcessors, Provider<ElementsRegistry> registryProvider) {
+        this.registryProvider = registryProvider;
         this.postProcessors = postProcessors;
     }
 
@@ -29,7 +29,7 @@ public class DefinitionResolverProvider implements Provider<ConfigurableResolver
      */
     @Override
     public ConfigurableResolver get() {
-        ConfigurableResolver resolver = new DefinitionResolver();
+        ConfigurableResolver resolver = new DefinitionResolver(registryProvider);
         for (ResolverPostProcessor postProcessor : postProcessors) {
             resolver.addPostProcessor(postProcessor);
         }

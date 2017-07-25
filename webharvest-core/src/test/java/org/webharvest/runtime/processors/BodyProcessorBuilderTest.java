@@ -2,11 +2,11 @@ package org.webharvest.runtime.processors;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.unitils.UnitilsTestNG;
 import org.unitils.mock.Mock;
 import org.webharvest.UnitilsTestNGExtension;
-import org.webharvest.definition.ElementDefProxy;
 import org.webharvest.definition.IElementDef;
+import org.webharvest.definition.WebHarvestPluginDef;
+import org.webharvest.definition.XmlNode;
 import org.webharvest.definition.XmlNodeTestUtils;
 import org.webharvest.runtime.processors.BodyProcessor.Builder;
 
@@ -34,11 +34,11 @@ public class BodyProcessorBuilderTest extends UnitilsTestNGExtension {
                 "Unexpected parent processor.");
         }
 
-        private class MockElementDef extends ElementDefProxy {
+        private class MockElementDef extends WebHarvestPluginDef {
 
-            protected MockElementDef() {
+            public MockElementDef() {
                 super(XmlNodeTestUtils.createXmlNode("<empty/>",
-                        XmlNodeTestUtils.NAMESPACE_21));
+                        XmlNodeTestUtils.NAMESPACE_21), null);
             }
 
         }

@@ -49,6 +49,9 @@ import org.webharvest.runtime.processors.WebHarvestPlugin;
 import org.webharvest.utils.Assert;
 import org.webharvest.utils.ClassLoaderUtil;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 /**
  * Class contains information and logic to validate and crate definition classes for
  * parsed xml nodes from Web-Harvest configurations.
@@ -58,6 +61,11 @@ import org.webharvest.utils.ClassLoaderUtil;
  */
 @Singleton
 public class DefinitionResolver extends AbstractRefreshableResolver {
+
+    @Inject
+    public DefinitionResolver(Provider<ElementsRegistry> registryProvider) {
+        super(registryProvider);
+    }
 
     private final static class PluginClassKey {
 
@@ -93,7 +101,6 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
     private Map<ElementName, Class[]> externalPluginDependencies =
         new HashMap<ElementName, Class[]>();
 
-    @Deprecated
     private void registerPlugin(final Class pluginClass,
             final Class<? extends IElementDef> definitionClass,
             final boolean isInternalPlugin, final String... uris) {

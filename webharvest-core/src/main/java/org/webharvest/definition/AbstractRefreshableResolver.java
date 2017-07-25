@@ -33,6 +33,7 @@
 
 package org.webharvest.definition;
 
+import javax.inject.Provider;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,6 +51,8 @@ import java.util.List;
 public abstract class AbstractRefreshableResolver implements
         ConfigurableResolver {
 
+    private final Provider<ElementsRegistry> registryProvider;
+
     private ElementsRegistry elementsRegistry;
 
     private final List<ResolverPostProcessor> postProcessors =
@@ -57,6 +60,10 @@ public abstract class AbstractRefreshableResolver implements
 
     /** Synchronization monitor for the "refresh" operation */
     private final Object refreshMonitor = new Object();
+
+    public AbstractRefreshableResolver(Provider<ElementsRegistry> registryProvider) {
+        this.registryProvider = registryProvider;
+    }
 
     /**
      * {@inheritDoc}
@@ -73,7 +80,7 @@ public abstract class AbstractRefreshableResolver implements
     @Override
     public final void refresh() {
         synchronized (this.refreshMonitor) {
-            this.elementsRegistry = createElementsRegistry();
+            this.elementsRegistry = registryProvider.get();
             invokePostProcessors();
         }
     }
@@ -91,12 +98,4 @@ public abstract class AbstractRefreshableResolver implements
         return this.elementsRegistry;
     }
 
-    /**
-     * Creates internal {@link ElementsRegistry} for the current resolver each
-     * time {@link #refresh()} is invoked. Subclasses may override this method
-     * providing custom {@link ElementsRegistry} implementations if necessary.
-     */
-    protected ElementsRegistry createElementsRegistry() {
-        return new ElementsRegistryImpl();
-    }
 }

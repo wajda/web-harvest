@@ -77,6 +77,8 @@ public final class ScraperModule extends AbstractModule {
         bind(ScrapingAwareHelper.class).toInstance(new ScrapingAwareHelper());
         bindListener(Matchers.any(), new PostConstructListener());
 
+        bind(ElementsRegistry.class).to(ElementsRegistryImpl.class);
+
         // FIXME rbala AbstractRegistry is actually not an abstract (no abstract methods)
         bind(new TypeLiteral<Registry<Harvester, EventBus>>() {}).
                 toInstance(new LockedRegistry<Harvester, EventBus>(

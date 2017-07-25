@@ -55,7 +55,7 @@ public class XQueryDef extends WebHarvestPluginDef {
         super(xmlNode, processorClass);
 
         XmlNode xqDefNode = xmlNode.getFirstSubnode(new ElementName("xq-expression", xmlNode.getUri()));
-        xqDef = xqDefNode == null ? null : new ElementDefProxy(xqDefNode);
+        xqDef = xqDefNode == null ? null : InjectorHelper.getInjector().getInstance(ConfigurableResolver.class).createElementDefinition(xqDefNode);
 
         List<XmlNode> listOfExternalParamNodes = xmlNode.getSubnodes(new ElementName("xq-param", xmlNode.getUri()));
 
