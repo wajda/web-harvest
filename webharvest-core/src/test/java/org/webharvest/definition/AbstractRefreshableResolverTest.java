@@ -50,6 +50,11 @@ public class AbstractRefreshableResolverTest extends UnitilsTestNG {
         }
 
         @Override
+        public void registerPlugin(Class pluginClass, String uri) {
+            throw new UnsupportedOperationException("TEST MOCK");
+        }
+
+        @Override
         public void registerPlugin(String className, String uri) throws PluginException {
             throw new UnsupportedOperationException("TEST MOCK");
         }

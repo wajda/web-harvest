@@ -80,6 +80,9 @@ public interface ConfigurableResolver {
     void registerPlugin(ElementInfo elementInfo, String namespace);
 
     @Deprecated
+    void registerPlugin(Class pluginClass, String uri);
+
+    @Deprecated
     void registerPlugin(String className, String uri) throws PluginException;
 
     @Deprecated

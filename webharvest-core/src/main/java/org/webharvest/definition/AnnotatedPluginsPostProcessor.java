@@ -43,7 +43,6 @@ import org.apache.commons.collections.PredicateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.webharvest.annotation.Definition;
-import org.webharvest.annotation.ElementInfoFactory;
 import org.webharvest.runtime.processors.AbstractProcessor;
 import org.webharvest.runtime.processors.WebHarvestPlugin;
 import org.webharvest.runtime.processors.plugins.Autoscanned;
@@ -112,13 +111,11 @@ public final class AnnotatedPluginsPostProcessor implements
             final ConfigurableResolver resolver) {
         final TargetNamespace targetNamespace = plugin.getAnnotation(
                 TargetNamespace.class);
-        final ElementInfo elementInfo =
-                ElementInfoFactory.getElementInfo(plugin);
 
         for (String namespace : targetNamespace.value()) {
             LOGGER.info("Registering plugin {} under namespace {}",
                     plugin.getCanonicalName(), namespace);
-            resolver.registerPlugin(elementInfo, namespace);
+            resolver.registerPlugin(plugin, namespace);
         }
     }
 

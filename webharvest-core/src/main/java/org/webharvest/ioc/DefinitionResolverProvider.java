@@ -33,6 +33,7 @@ public class DefinitionResolverProvider implements Provider<ConfigurableResolver
         for (ResolverPostProcessor postProcessor : postProcessors) {
             resolver.addPostProcessor(postProcessor);
         }
+        // TODO rbala Possibly move it out from provider
         resolver.refresh();
 
         return resolver;

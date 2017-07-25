@@ -2,7 +2,6 @@ package org.webharvest.ioc;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import org.webharvest.Harvester;
 import org.webharvest.LockedRegistry;
 import org.webharvest.Registry;
 import org.webharvest.ScrapingAware;
-import org.webharvest.WHConstants;
 import org.webharvest.definition.*;
 import org.webharvest.deprecated.runtime.ScraperContext10;
 import org.webharvest.events.DefaultHandlerHolder;
@@ -35,6 +33,7 @@ import org.webharvest.runtime.WebScraper;
 import org.webharvest.runtime.database.ConnectionFactory;
 import org.webharvest.runtime.database.JNDIConnectionFactory;
 import org.webharvest.runtime.database.StandaloneConnectionPool;
+import org.webharvest.runtime.processors.Processor;
 import org.webharvest.runtime.scripting.ScriptEngineFactory;
 import org.webharvest.runtime.scripting.jsr.JSRScriptEngineFactory;
 import org.webharvest.runtime.templaters.BaseTemplater;
@@ -71,6 +70,7 @@ public final class ScraperModule extends AbstractModule {
      */
     @Override
     protected void configure() {
+        // TODO use multibinding instead
         bind(new TypeLiteral<List<? extends ResolverPostProcessor>>(){})
                 .annotatedWith(Names.named("resolverPostProcessors")).toInstance(Arrays.asList(new AnnotatedPluginsPostProcessor("org.webharvest.deprecated.runtime.processors"), new AnnotatedPluginsPostProcessor( "org.webharvest.runtime.processors")));
 
@@ -133,10 +133,6 @@ public final class ScraperModule extends AbstractModule {
         bind(RuntimeConfig.class).in(Singleton.class);
 
         requestStaticInjection(DefinitionResolver.class);
-    }
-
-    protected void bindConfigurableResolver() {
-
     }
 
     protected void bindDBConnectionFactory() {

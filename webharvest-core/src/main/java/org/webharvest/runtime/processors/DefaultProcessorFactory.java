@@ -15,9 +15,7 @@ public class DefaultProcessorFactory implements ProcessorFactory {
     // TODO rbala Missing unit test
     @Override
     public <TDef extends IElementDef> Processor<TDef> createProcessor(DynamicScopeContext context, TDef elementDef) {
-        return new StoppedOrExitedProcessor<TDef>(
-                new RunningStatusController<TDef>(
-                        elementDef.createPlugin()));
+        return new StoppedOrExitedProcessor<TDef>(new RunningStatusController<TDef>(elementDef.createPlugin()));
     }
 
 }

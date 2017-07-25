@@ -141,13 +141,21 @@ public class DefinitionResolver extends AbstractRefreshableResolver {
         }
 
         for (final Class subClass : elementInfo.getDependantProcessors()) {
-            registerPlugin(ElementInfoFactory.getElementInfo(subClass), namespace);
+            registerPlugin(subClass, namespace);
         }
 
         if (!elementInfo.isInternal()) {
             externalPlugins.put(new PluginClassKey(elementInfo.getProcessorClass().getName(), namespace), pluginElementName);
         }
         externalPluginDependencies.put(pluginElementName, elementInfo.getDependantProcessors());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void registerPlugin(Class pluginClass, String uri) {
+        registerPlugin(ElementInfoFactory.getElementInfo(pluginClass), uri);
     }
 
     @Deprecated
