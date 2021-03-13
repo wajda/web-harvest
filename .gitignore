@@ -7,3 +7,6 @@
 # Maven
 target/
 pom.xml.bkp
+
+# Tests
+test-output/
